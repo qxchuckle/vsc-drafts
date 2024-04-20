@@ -26,18 +26,19 @@ function explorer(folderPath: string) {
   if (!folderPath) {
     return;
   }
-  try {
-    switch (process.platform) {
-      case "darwin":
-        spawn("open", [folderPath]);
-        break;
-      case "win32":
-        spawn("explorer", [folderPath]);
-        break;
-      default:
-        spawn("xdg-open", [folderPath]);
-    }
-  } catch (error) {
-    console.error(error);
-  }
+  vscode.env.openExternal(vscode.Uri.file(folderPath));
+  // try {
+  //   switch (process.platform) {
+  //     case "darwin":
+  //       spawn("open", [folderPath]);
+  //       break;
+  //     case "win32":
+  //       spawn("explorer", [folderPath]);
+  //       break;
+  //     default:
+  //       spawn("xdg-open", [folderPath]);
+  //   }
+  // } catch (error) {
+  //   console.error(error);
+  // }
 }
