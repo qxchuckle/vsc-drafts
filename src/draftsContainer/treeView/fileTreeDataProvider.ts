@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import { FileItem } from "./fileItem";
-import * as path from 'path';
+import * as path from "path";
 
 export class FileTreeDataProvider implements vscode.TreeDataProvider<FileItem> {
   private _onDidChangeTreeData: vscode.EventEmitter<FileItem | undefined> =
@@ -26,7 +26,7 @@ export class FileTreeDataProvider implements vscode.TreeDataProvider<FileItem> {
   }
 
   handleError(error: Error): void {
-    console.error('An error occurred:', error);
+    console.error("An error occurred:", error);
   }
 
   refresh(): void {
@@ -98,6 +98,22 @@ export class FileTreeDataProvider implements vscode.TreeDataProvider<FileItem> {
     });
   }
 
+  async getParent(item: FileItem): Promise<FileItem | undefined> {
+    if (!item.resourceUri) {
+      return;
+    }
+    const parentPath = path.dirname(item.resourceUri.fsPath);
+    if (parentPath === this.rootPath) {
+      return undefined;
+    } else {
+      return new FileItem(
+        path.basename(parentPath),
+        vscode.TreeItemCollapsibleState.Collapsed,
+        vscode.Uri.file(parentPath)
+      );
+    }
+  }
+
   async findItem(uri: vscode.Uri): Promise<FileItem | undefined> {
     const searchPath = uri.fsPath;
     const queue: FileItem[] = [];
@@ -115,7 +131,19 @@ export class FileTreeDataProvider implements vscode.TreeDataProvider<FileItem> {
         queue.push(...children);
       }
     }
-
     return undefined;
+  }
+
+  async revealItem(fileUri: vscode.Uri) {
+    // 找到新创建的文件对应的树视图项
+    const item = await this.findItem(fileUri);
+    if (item) {
+      // 展开到这个项，并将焦点设置到这个项上
+      await this.treeView?.reveal(item, {
+        select: true,
+        focus: true,
+        expand: true,
+      });
+    }
   }
 }

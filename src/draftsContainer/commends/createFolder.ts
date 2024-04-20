@@ -33,6 +33,7 @@ export function createCreateFolder(provider: ref<FileTreeDataProvider>) {
       const folderUri = vscode.Uri.file(folderPath);
       await vscode.workspace.fs.createDirectory(folderUri);
       provider.value?.refresh();
+      await provider.value?.revealItem(folderUri);
     }
   );
 }

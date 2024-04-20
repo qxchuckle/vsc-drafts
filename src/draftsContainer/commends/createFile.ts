@@ -38,26 +38,7 @@ export function createCreateFile(provider: ref<FileTreeDataProvider>) {
       await vscode.window.showTextDocument(
         await vscode.workspace.openTextDocument(fileUri)
       );
-      // 在树视图中聚焦
-      // const item = await provider.value.findItem(fileUri);
-      // if (!item) {
-      //   return;
-      // }
-      // vscode.window.showInformationMessage(
-      //   String(provider.value.treeView?.visible)
-      // );
-      // vscode.commands.executeCommand("workbench.view.extension.qx-drafts");
-      // vscode.commands.executeCommand("revealResource", {
-      //   resourceUri: item.resourceUri,
-      //   select: true,
-      //   focus: true,
-      //   revealIfVisible: true,
-      //   preserveFocus: true,
-      // });
-      // provider.value.treeView?.reveal(item, {
-      //   select: true,
-      //   focus: true,
-      // });
+      await provider.value?.revealItem(fileUri);
     }
   );
 }
