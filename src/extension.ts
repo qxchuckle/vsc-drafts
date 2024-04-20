@@ -9,6 +9,7 @@ import {
   createCreateFolder,
   createOpenInExplorer,
   createOpenInTerminal,
+  createOpenInNewWindow,
 } from "./commends";
 import { createTreeView } from "./treeView/createTreeView";
 
@@ -29,6 +30,7 @@ export function activate(context: vscode.ExtensionContext) {
   const createFolderCommand = createCreateFolder(fileTreeDataProvider);
   const openInExplorerCommand = createOpenInExplorer(fileTreeDataProvider);
   const openInTerminalCommand = createOpenInTerminal(fileTreeDataProvider);
+  const openInNewWindowCommand = createOpenInNewWindow(fileTreeDataProvider);
 
   context.subscriptions.push(
     showFileTreeCommand,
@@ -38,7 +40,8 @@ export function activate(context: vscode.ExtensionContext) {
     createFileCommand,
     createFolderCommand,
     openInExplorerCommand,
-    openInTerminalCommand
+    openInTerminalCommand,
+    openInNewWindowCommand
   );
 }
 

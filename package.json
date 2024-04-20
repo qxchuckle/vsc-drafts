@@ -40,7 +40,7 @@
     "viewsWelcome": [
       {
         "view": "qx-drafts",
-        "contents": "还没有选择草稿本\n[选择草稿文件夹](command:qx-drafts.showFileTree)"
+        "contents": "还没有选择草稿本 [learn more](https://github.com/qxchuckle/vsc-drafts)。\n[选择草稿本文件夹](command:qx-drafts.showFileTree)"
       }
     ],
     "menus": {
@@ -67,6 +67,11 @@
         },
         {
           "command": "qx-drafts.openInTerminal",
+          "group": "navigation",
+          "when": "view == qx-drafts"
+        },
+        {
+          "command": "qx-drafts.openInNewWindow",
           "group": "navigation",
           "when": "view == qx-drafts"
         }
@@ -106,6 +111,10 @@
         {
           "command": "qx-drafts.openInTerminal",
           "group": "inline",
+          "when": "view == qx-drafts"
+        },
+        {
+          "command": "qx-drafts.openInNewWindow",
           "when": "view == qx-drafts"
         }
       ]
@@ -166,6 +175,14 @@
           "light": "resource/images/shell.svg",
           "dark": "resource/images/shell.svg"
         }
+      },
+      {
+        "command": "qx-drafts.openInNewWindow",
+        "title": "在新窗口打开",
+        "icon": {
+          "light": "resource/images/newWindow.svg",
+          "dark": "resource/images/newWindow.svg"
+        }
       }
     ],
     "configuration": {
@@ -180,8 +197,7 @@
     }
   },
   "extensionKind": [
-    "ui",
-    "workspace"
+    "ui"
   ],
   "scripts": {
     "vscode:prepublish": "npm run compile",

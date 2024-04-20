@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { FileItem } from "./fileItem";
+import * as path from 'path';
 
 export class FileTreeDataProvider implements vscode.TreeDataProvider<FileItem> {
   private _onDidChangeTreeData: vscode.EventEmitter<FileItem | undefined> =
@@ -14,14 +15,18 @@ export class FileTreeDataProvider implements vscode.TreeDataProvider<FileItem> {
   public treeView: vscode.TreeView<FileItem> | undefined;
 
   constructor(rootPath: string, watch: boolean = true) {
-    this.rootPath = rootPath;
+    this.rootPath = path.normalize(rootPath);
     if (watch) {
       const pattern = new vscode.RelativePattern(this.rootPath, "*");
       this.fileWatcher = vscode.workspace.createFileSystemWatcher(pattern);
-      this.fileWatcher.onDidChange(this.refresh.bind(this));
-      this.fileWatcher.onDidCreate(this.refresh.bind(this));
-      this.fileWatcher.onDidDelete(this.refresh.bind(this));
+      this.fileWatcher.onDidChange(this.refresh.bind(this), this.handleError);
+      this.fileWatcher.onDidCreate(this.refresh.bind(this), this.handleError);
+      this.fileWatcher.onDidDelete(this.refresh.bind(this), this.handleError);
     }
+  }
+
+  handleError(error: Error): void {
+    console.error('An error occurred:', error);
   }
 
   refresh(): void {

@@ -30,7 +30,7 @@ export function createCreateFile(provider: ref<FileTreeDataProvider>) {
       if (!fileName) {
         return;
       }
-      const filePath = path.join(newPath, fileName);
+      const filePath = path.normalize(path.join(newPath, fileName));
       const fileUri = vscode.Uri.file(filePath);
       await vscode.workspace.fs.writeFile(fileUri, new Uint8Array());
       provider.value?.refresh();

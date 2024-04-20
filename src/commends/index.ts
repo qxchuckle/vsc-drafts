@@ -6,3 +6,4 @@ export { createCreateFile } from "./createFile";
 export { createCreateFolder } from "./createFolder";
 export { createOpenInExplorer } from "./openInExplorer";
 export { createOpenInTerminal } from "./openInTerminal";
+export { createOpenInNewWindow } from "./openInNewWindow";

@@ -29,7 +29,7 @@ export function createCreateFolder(provider: ref<FileTreeDataProvider>) {
       if (!folderName) {
         return;
       }
-      const folderPath = path.join(newPath, folderName);
+      const folderPath = path.normalize(path.join(newPath, folderName));
       const folderUri = vscode.Uri.file(folderPath);
       await vscode.workspace.fs.createDirectory(folderUri);
       provider.value?.refresh();
