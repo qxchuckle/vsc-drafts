@@ -1,0 +1,186 @@
+{
+  "name": "qx-drafts",
+  "displayName": "草稿本Drafts",
+  "description": "一个草稿本",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.70.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onView:qx-drafts"
+  ],
+  "main": "./out/extension.js",
+  "icon": "resource/images/drafts.svg",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "qx-drafts-container",
+          "title": "草稿本",
+          "icon": "resource/images/drafts.svg"
+        }
+      ]
+    },
+    "views": {
+      "qx-drafts-container": [
+        {
+          "id": "qx-drafts",
+          "name": "Drafts"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "qx-drafts",
+        "contents": "还没有选择草稿本\n[选择草稿文件夹](command:qx-drafts.showFileTree)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "qx-drafts.refresh",
+          "group": "navigation",
+          "when": "view == qx-drafts"
+        },
+        {
+          "command": "qx-drafts.createFile",
+          "group": "navigation",
+          "when": "view == qx-drafts"
+        },
+        {
+          "command": "qx-drafts.createFolder",
+          "group": "navigation",
+          "when": "view == qx-drafts"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "qx-drafts.delete",
+          "when": "view == qx-drafts"
+        },
+        {
+          "command": "qx-drafts.rename",
+          "when": "view == qx-drafts"
+        },
+        {
+          "command": "qx-drafts.createFile",
+          "when": "view == qx-drafts && viewItem == folder"
+        },
+        {
+          "command": "qx-drafts.createFolder",
+          "when": "view == qx-drafts && viewItem == folder"
+        },
+        {
+          "command": "qx-drafts.createFile",
+          "group": "inline",
+          "when": "view == qx-drafts && viewItem == folder"
+        },
+        {
+          "command": "qx-drafts.createFolder",
+          "group": "inline",
+          "when": "view == qx-drafts && viewItem == folder"
+        },
+        {
+          "command": "qx-drafts.openInExplorer",
+          "group": "inline",
+          "when": "view == qx-drafts"
+        },
+        {
+          "command": "qx-drafts.openInTerminal",
+          "when": "view == qx-drafts"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "qx-drafts.showFileTree",
+        "title": "草稿本：选择文件夹"
+      },
+      {
+        "command": "qx-drafts.openFile",
+        "title": "打开文件"
+      },
+      {
+        "command": "qx-drafts.refresh",
+        "title": "刷新",
+        "icon": {
+          "light": "resource/images/refresh.svg",
+          "dark": "resource/images/refresh.svg"
+        }
+      },
+      {
+        "command": "qx-drafts.delete",
+        "title": "删除"
+      },
+      {
+        "command": "qx-drafts.rename",
+        "title": "重命名"
+      },
+      {
+        "command": "qx-drafts.createFile",
+        "title": "新建文件",
+        "icon": {
+          "light": "resource/images/newFile.svg",
+          "dark": "resource/images/newFile.svg"
+        }
+      },
+      {
+        "command": "qx-drafts.createFolder",
+        "title": "新建文件夹",
+        "icon": {
+          "light": "resource/images/newFolder.svg",
+          "dark": "resource/images/newFolder.svg"
+        }
+      },
+      {
+        "command": "qx-drafts.openInExplorer",
+        "title": "在资源管理器中打开",
+        "icon": {
+          "light": "resource/images/openInExplorer.svg",
+          "dark": "resource/images/openInExplorer.svg"
+        }
+      },
+      {
+        "command": "qx-drafts.openInTerminal",
+        "title": "在终端中打开"
+      }
+    ]
+  },
+  "configuration": {
+    "title": "qx-drafts",
+    "properties": {
+      "qx-drafts.folderPath": {
+        "type": "string",
+        "default": "",
+        "description": "草稿本路径"
+      }
+    }
+  },
+  "extensionKind": [
+    "ui",
+    "workspace"
+  ],
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.88.0",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "16.x",
+    "@typescript-eslint/eslint-plugin": "^6.4.1",
+    "@typescript-eslint/parser": "^6.4.1",
+    "eslint": "^8.47.0",
+    "glob": "^10.3.3",
+    "mocha": "^10.2.0",
+    "typescript": "^5.1.6",
+    "@vscode/test-electron": "^2.3.4"
+  }
+}
