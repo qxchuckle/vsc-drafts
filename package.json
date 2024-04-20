@@ -1,7 +1,12 @@
 {
   "name": "qx-drafts",
   "displayName": "草稿本Drafts",
-  "description": "一个草稿本",
+  "description": "一个草稿本，再也不用多打开一个窗口了",
+  "publisher": "qcqx",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/qxchuckle/vsc-drafts.git"
+  },
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.70.0"
