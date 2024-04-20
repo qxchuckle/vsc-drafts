@@ -11,6 +11,10 @@
 
 ![image](https://github.com/qxchuckle/vsc-drafts/assets/55614189/6f2f633b-3310-433e-bfb2-eedec7aa94c4)
 
+可以将当前草稿本保存起来，支持快速热切换。
+
+![image](https://github.com/qxchuckle/vsc-drafts/assets/55614189/dd1f5743-18e6-410b-ac9c-2225818566e8)
+
 **TODO** 收藏功能
 
 
