@@ -1,4 +1,3 @@
-import { publicDecrypt } from "crypto";
 import * as vscode from "vscode";
 
 export class FileItem extends vscode.TreeItem {

@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 import { FileTreeDataProvider } from "../treeView/fileTreeDataProvider";
 import { FileItem } from "../treeView/fileItem";
 import * as path from "path";
-import { spawn } from "child_process";
+// import { spawn } from "child_process";
 
 export function createOpenInExplorer(provider: ref<FileTreeDataProvider>) {
   return vscode.commands.registerCommand(

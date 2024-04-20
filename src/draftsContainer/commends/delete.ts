@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import { FileTreeDataProvider } from "../treeView/fileTreeDataProvider";
 import { FileItem } from "../treeView/fileItem";
-import * as path from "path";
+// import * as path from "path";
 
 export function createDelete(provider: ref<FileTreeDataProvider>) {
   return vscode.commands.registerCommand(
