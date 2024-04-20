@@ -9,7 +9,7 @@
 
 ![image](https://github.com/qxchuckle/vsc-drafts/assets/55614189/b8737ac8-69fe-49ab-a1c5-025e85565e70)
 
-![image](https://github.com/qxchuckle/vsc-drafts/assets/55614189/57efabaf-2bc7-4148-80c9-7ab27d4690f0)
+![image](https://github.com/qxchuckle/vsc-drafts/assets/55614189/6f2f633b-3310-433e-bfb2-eedec7aa94c4)
 
 **TODO** 收藏功能
 
