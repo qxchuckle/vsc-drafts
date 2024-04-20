@@ -12,12 +12,12 @@ export function createDraftsTreeView(path: string, watch: boolean = true) {
   // 保存 treeView 实例
   provider.treeView = treeView;
   // 监听选中项变动
-  treeView.onDidChangeSelection((e) => {
-    if (e.selection && e.selection.length > 0) {
-      provider.setSelectedItem(e.selection[0]);
-    } else {
-      provider.setSelectedItem(undefined);
-    }
-  });
+  // treeView.onDidChangeSelection((e) => {
+  //   if (e.selection && e.selection.length > 0) {
+  //     provider.setSelectedItem(e.selection[0]);
+  //   } else {
+  //     provider.setSelectedItem(undefined);
+  //   }
+  // });
   return provider;
 }

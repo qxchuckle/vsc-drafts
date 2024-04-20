@@ -84,7 +84,7 @@ export class FileTreeDataProvider implements vscode.TreeDataProvider<FileItem> {
       }
     });
 
-    return directoryEntries.map(([name, type]) => {
+    const items = directoryEntries.map(([name, type]) => {
       const filePath = element
         ? vscode.Uri.file(`${element.resourceUri!.fsPath}/${name}`)
         : vscode.Uri.file(`${this.rootPath}/${name}`);
@@ -96,6 +96,13 @@ export class FileTreeDataProvider implements vscode.TreeDataProvider<FileItem> {
         filePath
       );
     });
+
+    if (!element) {
+      items.push(this.createFocusRootItem("点击聚焦回根目录，这是为了避免某些BUG"));
+      items.push(this.createFocusRootItem("比如你想在根目录创建文件，那就先点一下"));
+    }
+
+    return items;
   }
 
   async getParent(item: FileItem): Promise<FileItem | undefined> {
@@ -145,5 +152,14 @@ export class FileTreeDataProvider implements vscode.TreeDataProvider<FileItem> {
         expand: true,
       });
     }
+  }
+
+  createFocusRootItem(title: string): FileItem {
+    return new FileItem(
+      title,
+      vscode.TreeItemCollapsibleState.None,
+      vscode.Uri.file(this.rootPath),
+      true
+    );
   }
 }

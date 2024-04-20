@@ -28,7 +28,7 @@ export function activate(context: vscode.ExtensionContext) {
   if (path) {
     fileTreeDataProvider.value = createDraftsTreeView(path, true);
   }
-  const showFileTreeCommand = createShowFileTree(fileTreeDataProvider, true);
+  const showFileTreeCommand = createShowFileTree(fileTreeDataProvider, false);
   const refreshCommand = createRefresh(fileTreeDataProvider);
   const deleteCommand = createDelete(fileTreeDataProvider);
   const renameCommand = createRename(fileTreeDataProvider);

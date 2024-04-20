@@ -5,9 +5,13 @@ export class FileItem extends vscode.TreeItem {
   constructor(
     public readonly label: string,
     public readonly collapsibleState: vscode.TreeItemCollapsibleState,
-    public readonly resourceUri?: vscode.Uri
+    public readonly resourceUri?: vscode.Uri,
+    public readonly root?: boolean
   ) {
     super(label, collapsibleState);
+    if (root) {
+      return;
+    }
     if (collapsibleState === vscode.TreeItemCollapsibleState.None) {
       this.command = {
         command: "vscode.open",
