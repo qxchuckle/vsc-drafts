@@ -1,12 +1,13 @@
 import * as vscode from "vscode";
 import { FileTreeDataProvider } from "./fileTreeDataProvider";
 
-export function createTreeView(path: string, watch: boolean = true) {
+export function createDraftsTreeView(path: string, watch: boolean = true) {
   // 创建数据提供者
   const provider = new FileTreeDataProvider(path, watch);
   // 创建 treeView
   const treeView = vscode.window.createTreeView("qx-drafts", {
     treeDataProvider: provider,
+    showCollapseAll: true,
   });
   // 保存 treeView 实例
   provider.treeView = treeView;

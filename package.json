@@ -33,7 +33,11 @@
       "qx-drafts-container": [
         {
           "id": "qx-drafts",
-          "name": "Drafts"
+          "name": "草稿详情"
+        },
+        {
+          "id": "qx-drafts-list",
+          "name": "草稿本列表"
         }
       ]
     },
@@ -41,10 +45,18 @@
       {
         "view": "qx-drafts",
         "contents": "还没有选择草稿本 [learn more](https://github.com/qxchuckle/vsc-drafts)。\n[选择草稿本文件夹](command:qx-drafts.showFileTree)"
+      },
+      {
+        "view": "qx-drafts-list",
+        "contents": "还没有保存的草稿本 [learn more](https://github.com/qxchuckle/vsc-drafts)。\n[添加当前草稿本](command:qx-drafts-list.addDrafts)"
       }
     ],
     "menus": {
       "view/title": [
+        {
+          "command": "qx-drafts.showFileTree",
+          "when": "view == qx-drafts"
+        },
         {
           "command": "qx-drafts.refresh",
           "group": "navigation",
@@ -74,6 +86,11 @@
           "command": "qx-drafts.openInNewWindow",
           "group": "navigation",
           "when": "view == qx-drafts"
+        },
+        {
+          "command": "qx-drafts-list.addDrafts",
+          "group": "navigation",
+          "when": "view == qx-drafts-list"
         }
       ],
       "view/item/context": [
@@ -116,6 +133,16 @@
         {
           "command": "qx-drafts.openInNewWindow",
           "when": "view == qx-drafts"
+        },
+        {
+          "command": "qx-drafts-list.deleteDrafts",
+          "when": "view == qx-drafts-list",
+          "group": "inline"
+        },
+        {
+          "command": "qx-drafts-list.renameDrafts",
+          "when": "view == qx-drafts-list",
+          "group": "inline"
         }
       ]
     },
@@ -182,6 +209,26 @@
         "icon": {
           "light": "resource/images/newWindow.svg",
           "dark": "resource/images/newWindow.svg"
+        }
+      },
+      {
+        "command": "qx-drafts-list.addDrafts",
+        "title": "添加当前草稿本"
+      },
+      {
+        "command": "qx-drafts-list.deleteDrafts",
+        "title": "删除",
+        "icon": {
+          "light": "resource/images/delete.svg",
+          "dark": "resource/images/delete.svg"
+        }
+      },
+      {
+        "command": "qx-drafts-list.renameDrafts",
+        "title": "重命名",
+        "icon": {
+          "light": "resource/images/rename.svg",
+          "dark": "resource/images/rename.svg"
         }
       }
     ],
