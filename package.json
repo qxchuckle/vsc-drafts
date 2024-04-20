@@ -18,14 +18,14 @@
     "onView:qx-drafts"
   ],
   "main": "./out/extension.js",
-  "icon": "resource/images/drafts.svg",
+  "icon": "resource/images/logo.png",
   "contributes": {
     "viewsContainers": {
       "activitybar": [
         {
           "id": "qx-drafts-container",
           "title": "草稿本",
-          "icon": "resource/images/drafts.svg"
+          "icon": "resource/images/drafts1.svg"
         }
       ]
     },
@@ -57,6 +57,16 @@
         },
         {
           "command": "qx-drafts.createFolder",
+          "group": "navigation",
+          "when": "view == qx-drafts"
+        },
+        {
+          "command": "qx-drafts.openInExplorer",
+          "group": "navigation",
+          "when": "view == qx-drafts"
+        },
+        {
+          "command": "qx-drafts.openInTerminal",
           "group": "navigation",
           "when": "view == qx-drafts"
         }
@@ -95,6 +105,7 @@
         },
         {
           "command": "qx-drafts.openInTerminal",
+          "group": "inline",
           "when": "view == qx-drafts"
         }
       ]
@@ -144,23 +155,27 @@
         "command": "qx-drafts.openInExplorer",
         "title": "在资源管理器中打开",
         "icon": {
-          "light": "resource/images/openInExplorer.svg",
-          "dark": "resource/images/openInExplorer.svg"
+          "light": "resource/images/explorer.svg",
+          "dark": "resource/images/explorer.svg"
         }
       },
       {
         "command": "qx-drafts.openInTerminal",
-        "title": "在终端中打开"
+        "title": "在终端中打开",
+        "icon": {
+          "light": "resource/images/shell.svg",
+          "dark": "resource/images/shell.svg"
+        }
       }
-    ]
-  },
-  "configuration": {
-    "title": "qx-drafts",
-    "properties": {
-      "qx-drafts.folderPath": {
-        "type": "string",
-        "default": "",
-        "description": "草稿本路径"
+    ],
+    "configuration": {
+      "title": "草稿本Drafts",
+      "properties": {
+        "qx-drafts.folderPath": {
+          "type": "string",
+          "default": "",
+          "description": "草稿本路径"
+        }
       }
     }
   },
@@ -177,7 +192,7 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
-    "@types/vscode": "^1.88.0",
+    "@types/vscode": "^1.70.0",
     "@types/mocha": "^10.0.1",
     "@types/node": "16.x",
     "@typescript-eslint/eslint-plugin": "^6.4.1",

@@ -8,6 +8,8 @@ export function createOpenInTerminal(provider: ref<FileTreeDataProvider>) {
     "qx-drafts.openInTerminal",
     async (fileItem: FileItem | undefined) => {
       if (!fileItem?.resourceUri) {
+        const cwd = provider.value?.getRootPath();
+        cwd && vscode.window.createTerminal({ cwd }).show();
         return;
       }
       let folderPath = fileItem.resourceUri.fsPath;

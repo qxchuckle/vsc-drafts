@@ -17,9 +17,9 @@ export function activate(context: vscode.ExtensionContext) {
 
   const config = vscode.workspace.getConfiguration("qx-drafts");
   const path = config.get<string>("folderPath");
-  vscode.window.showInformationMessage("path: " + path);
+  // vscode.window.showInformationMessage("path: " + path);
   if (path) {
-    createTreeView(path, true);
+    fileTreeDataProvider.value = createTreeView(path, true);
   }
   const showFileTreeCommand = createShowFileTree(fileTreeDataProvider, true);
   const refreshCommand = createRefresh(fileTreeDataProvider);

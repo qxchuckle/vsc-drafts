@@ -2,13 +2,14 @@ import * as vscode from "vscode";
 import { FileTreeDataProvider } from "../treeView/fileTreeDataProvider";
 import { FileItem } from "../treeView/fileItem";
 import * as path from "path";
-import { exec } from "child_process";
+import { spawn } from "child_process";
 
 export function createOpenInExplorer(provider: ref<FileTreeDataProvider>) {
   return vscode.commands.registerCommand(
     "qx-drafts.openInExplorer",
     async (fileItem: FileItem | undefined) => {
       if (!fileItem?.resourceUri) {
+        explorer(provider.value?.getRootPath() || "");
         return;
       }
       let folderPath = fileItem.resourceUri.fsPath;
@@ -16,19 +17,27 @@ export function createOpenInExplorer(provider: ref<FileTreeDataProvider>) {
       if (fileItem.contextValue === "file") {
         folderPath = path.dirname(folderPath);
       }
-      if (!folderPath) {
-        return;
-      }
-      switch (process.platform) {
-        case "darwin":
-          exec(`open "${folderPath}"`);
-          break;
-        case "win32":
-          exec(`explorer "${folderPath}"`);
-          break;
-        default:
-          exec(`xdg-open "${folderPath}"`);
-      }
+      explorer(folderPath);
     }
   );
+}
+
+function explorer(folderPath: string) {
+  if (!folderPath) {
+    return;
+  }
+  try {
+    switch (process.platform) {
+      case "darwin":
+        spawn("open", [folderPath]);
+        break;
+      case "win32":
+        spawn("explorer", [folderPath]);
+        break;
+      default:
+        spawn("xdg-open", [folderPath]);
+    }
+  } catch (error) {
+    console.error(error);
+  }
 }

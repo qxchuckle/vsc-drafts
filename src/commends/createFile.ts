@@ -19,7 +19,7 @@ export function createCreateFile(provider: ref<FileTreeDataProvider>) {
       } else {
         newPath = provider.value.getRootPath();
       }
-      vscode.window.showInformationMessage(newPath);
+      // vscode.window.showInformationMessage(newPath);
       if (!newPath) {
         return;
       }
