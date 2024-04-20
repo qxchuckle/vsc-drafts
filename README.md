@@ -5,12 +5,13 @@
 
 再也不用将你的 `"test"` 文件夹额外打开一个窗口了。
 
-**TODO** 收藏功能
+一个命令：`草稿本：选择文件夹`，用于选择一个文件夹作为草稿本。
 
 ![image](https://github.com/qxchuckle/vsc-drafts/assets/55614189/b8737ac8-69fe-49ab-a1c5-025e85565e70)
 
 ![image](https://github.com/qxchuckle/vsc-drafts/assets/55614189/57efabaf-2bc7-4148-80c9-7ab27d4690f0)
 
+**TODO** 收藏功能
 
 
 
