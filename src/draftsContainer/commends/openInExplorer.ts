@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 import { FileTreeDataProvider } from "../treeView/fileTreeDataProvider";
 import { FileItem } from "../treeView/fileItem";
 import * as path from "path";
-// import { spawn } from "child_process";
+import { spawn } from "child_process";
 
 export function createOpenInExplorer(provider: ref<FileTreeDataProvider>) {
   return vscode.commands.registerCommand(
@@ -26,19 +26,29 @@ function explorer(folderPath: string) {
   if (!folderPath) {
     return;
   }
-  vscode.env.openExternal(vscode.Uri.file(folderPath));
-  // try {
-  //   switch (process.platform) {
-  //     case "darwin":
-  //       spawn("open", [folderPath]);
-  //       break;
-  //     case "win32":
-  //       spawn("explorer", [folderPath]);
-  //       break;
-  //     default:
-  //       spawn("xdg-open", [folderPath]);
-  //   }
-  // } catch (error) {
-  //   console.error(error);
-  // }
+  if (containsNonAscii(folderPath)) {
+    // 存在非ascii字符则使用spawn打开
+    try {
+      switch (process.platform) {
+        case "darwin":
+          spawn("open", [folderPath]);
+          break;
+        case "win32":
+          spawn("explorer", [folderPath]);
+          break;
+        default:
+          spawn("xdg-open", [folderPath]);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  } else {
+    // openExternal 只支持ascii字符路径
+    vscode.env.openExternal(vscode.Uri.file(folderPath));
+  }
+}
+
+// 判断是否包含非ascii字符
+function containsNonAscii(str: string) {
+  return /[^\x00-\x7F]/.test(str);
 }
