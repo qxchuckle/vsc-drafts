@@ -5,6 +5,8 @@
 
 再也不用为你的 `"test"` 文件夹（临时文件、代码草稿）额外打开一个窗口了。
 
+**BUG**与**建议**请前往[Issues](https://github.com/qxchuckle/vsc-drafts/issues)讨论。
+
 ## 安装
 VSCode插件市场：[草稿本(Drafts Scratch)](https://marketplace.visualstudio.com/items?itemName=qcqx.qx-drafts)
 
@@ -19,11 +21,30 @@ VSCode插件市场：[草稿本(Drafts Scratch)](https://marketplace.visualstudi
 
 ![image](https://github.com/qxchuckle/vsc-drafts/assets/55614189/6d77214c-a248-4a1e-b6c4-6e275076cf90)
 
+## TODO
+暂无
 
+## 开发
+克隆本项目：
 
+```bash
+git clone git@github.com:qxchuckle/vsc-drafts.git
+npm install
+```
 
+项目结构：
 
-
+```
+├───📁 resource # 静态资源
+├───📁 src # 项目源码
+│   ├───📁 [功能名称] # 区分不同功能
+│   │   └─── 📁 commends # 该功能的命令
+│   │   └─── 📁 treeView # 该功能的树视图
+|   |   └─── 📁 ...... # 该功能的其它子项
+│   └───📄 extension.ts # 入口文件
+├───📁 types # 定义类型
+└───📄 ......
+```
 
 
 
