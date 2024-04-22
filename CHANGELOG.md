@@ -1,9 +1,40 @@
-# Change Log
+# Changelog
+各版本更新日志
 
-All notable changes to the "qx-drafts" extension will be documented in this file.
+## [0.2.1]
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+- 记录以往版本的Changelog
+- 重新整理README
 
-## [Unreleased]
+## [0.2.0]
 
-- Initial release
+- 插件更名为“草稿本(Drafts Scratch)”，增加 scratch 关键词，更符合IDEA用户认知
+
+## [0.1.4]
+
+- 修改根目录便捷操作提示
+
+## [0.1.3]
+
+- 修复openExternal无法识别、打开存在非ascii字符的路径问题
+
+## [0.1.2]
+
+- 创建文件后树视图将展开文件夹、聚焦到该文件
+- 使用内置openExternal代替spawn子进程，打开系统资源管理器速度更快
+- 优化代码逻辑，删除冗余代码
+
+## [0.1.1]
+
+- 增加草稿本列表，支持收藏当前草稿本、实时热切换。
+- 优化项目文件夹结构，不同功能拥有各自的commends、treeView文件夹
+
+## [0.1.0]
+
+- 优化代码逻辑、性能，更新视图UI配置
+- 增加新VSCode窗口打开功能
+
+## [0.0.1]
+
+- 完成基本功能，支持打开一个文件夹并使用树视图展示文件结构
+- 对文件的基本操作，创建、删除、重命名、终端打开、系统资源管理器打开
