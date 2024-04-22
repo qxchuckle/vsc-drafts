@@ -96,29 +96,29 @@
       "view/item/context": [
         {
           "command": "qx-drafts.delete",
-          "when": "view == qx-drafts"
+          "when": "view == qx-drafts && viewItem != rootItem"
         },
         {
           "command": "qx-drafts.rename",
-          "when": "view == qx-drafts"
+          "when": "view == qx-drafts && viewItem != rootItem"
         },
         {
           "command": "qx-drafts.createFile",
-          "when": "view == qx-drafts && viewItem == folder"
+          "when": "view == qx-drafts && (viewItem == folder || viewItem == rootItem)"
         },
         {
           "command": "qx-drafts.createFolder",
-          "when": "view == qx-drafts && viewItem == folder"
+          "when": "view == qx-drafts && (viewItem == folder || viewItem == rootItem)"
         },
         {
           "command": "qx-drafts.createFile",
           "group": "inline",
-          "when": "view == qx-drafts && viewItem == folder"
+          "when": "view == qx-drafts && (viewItem == folder || viewItem == rootItem)"
         },
         {
           "command": "qx-drafts.createFolder",
           "group": "inline",
-          "when": "view == qx-drafts && viewItem == folder"
+          "when": "view == qx-drafts && (viewItem == folder || viewItem == rootItem)"
         },
         {
           "command": "qx-drafts.openInExplorer",
@@ -133,6 +133,11 @@
         {
           "command": "qx-drafts.openInNewWindow",
           "when": "view == qx-drafts"
+        },
+        {
+          "command": "qx-drafts.openInNewWindow",
+          "group": "inline",
+          "when": "view == qx-drafts && viewItem == rootItem"
         },
         {
           "command": "qx-drafts-list.deleteDrafts",
@@ -239,6 +244,15 @@
           "type": "string",
           "default": "",
           "description": "草稿本路径"
+        }
+      }
+    },
+    "icons": {
+      "root-item-icon": {
+        "description": "root item",
+        "default": {
+          "fontPath": "./resource/icon/rootItem.woff",
+          "fontCharacter": "\\E900"
         }
       }
     }

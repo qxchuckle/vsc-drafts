@@ -98,8 +98,9 @@ export class FileTreeDataProvider implements vscode.TreeDataProvider<FileItem> {
     });
 
     if (!element) {
-      items.push(this.createFocusRootItem("点击聚焦回根目录，这是为了避免某些BUG"));
-      items.push(this.createFocusRootItem("比如你想在根目录创建文件，那就先点一下"));
+      items.push(this.createFocusRootItem("—— 根目录操作 ——"));
+      // items.push(this.createFocusRootItem("点击聚焦回根目录，这是为了避免某些BUG"));
+      // items.push(this.createFocusRootItem("比如你想在根目录创建文件，那就先点一下"));
     }
 
     return items;

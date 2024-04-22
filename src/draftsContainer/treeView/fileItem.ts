@@ -9,6 +9,9 @@ export class FileItem extends vscode.TreeItem {
   ) {
     super(label, collapsibleState);
     if (root) {
+      this.iconPath = new vscode.ThemeIcon('root-item-icon');
+      this.contextValue = "rootItem";
+      this.description = "为了避免一些BUG，这里提供了对根目录的便捷操作";
       return;
     }
     if (collapsibleState === vscode.TreeItemCollapsibleState.None) {
