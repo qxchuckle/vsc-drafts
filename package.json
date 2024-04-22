@@ -31,7 +31,7 @@
       "activitybar": [
         {
           "id": "qx-drafts-container",
-          "title": "草稿本",
+          "title": "草稿本 (Drafts Scratch)",
           "icon": "resource/images/drafts1.svg"
         }
       ]
@@ -40,11 +40,11 @@
       "qx-drafts-container": [
         {
           "id": "qx-drafts",
-          "name": "草稿详情"
+          "name": "草稿详情 Detail"
         },
         {
           "id": "qx-drafts-list",
-          "name": "草稿本列表"
+          "name": "草稿本列表 List"
         }
       ]
     },
