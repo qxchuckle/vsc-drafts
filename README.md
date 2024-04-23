@@ -33,6 +33,7 @@ VSCode插件市场：[草稿本(Drafts Scratch)](https://marketplace.visualstudi
 ## TODO
 1. 让 GitHub 远端草稿本也支持保存在草稿列表中
 2. 缓存清除功能
+3. 支持 Gitee、GitLab 等其它仓库(可能性不大，等找到octokit的替代库再说)
 
 ## 开发
 克隆本项目：
