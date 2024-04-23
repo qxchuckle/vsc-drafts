@@ -28,8 +28,11 @@ VSCode插件市场：[草稿本(Drafts Scratch)](https://marketplace.visualstudi
 
 ![image](https://github.com/qxchuckle/vsc-drafts/assets/55614189/5b5f4cd7-ace7-4967-b084-6fdded6b8fc9)
 
+> 该功能目前仅在 Window 端测试过，其它平台若存在兼容性问题请前往[Issues](https://github.com/qxchuckle/vsc-drafts/issues)提出。
+
 ## TODO
 1. 让 GitHub 远端草稿本也支持保存在草稿列表中
+2. 缓存清除功能
 
 ## 开发
 克隆本项目：
