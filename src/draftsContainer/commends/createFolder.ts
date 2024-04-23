@@ -24,13 +24,21 @@ export function createCreateFolder(provider: ref<FileTreeDataProvider>) {
       }
       const folderName = await vscode.window.showInputBox({
         prompt: "输入文件夹名",
-        placeHolder: "请输入文件夹名",
+        placeHolder: `在 ${
+          path.relative(provider.value.getRootPath(), newPath) || "根目录"
+        } 中创建文件夹`,
       });
       if (!folderName) {
         return;
       }
       const folderPath = path.normalize(path.join(newPath, folderName));
       const folderUri = vscode.Uri.file(folderPath);
+      // 判断文件夹是否存在
+      try {
+        await vscode.workspace.fs.stat(folderUri);
+        vscode.window.showErrorMessage(`${folderPath} 已存在，创建失败`);
+        return;
+      } catch (error) {}
       await vscode.workspace.fs.createDirectory(folderUri);
       provider.value?.refresh();
       await provider.value?.revealItem(folderUri);

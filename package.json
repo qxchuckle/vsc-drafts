@@ -1,7 +1,7 @@
 {
   "name": "qx-drafts",
   "displayName": "草稿本(Drafts Scratch)",
-  "description": "一个草稿本，再也不用多打开一个窗口了",
+  "description": "一个草稿本，方便管理代码草稿和临时文件，再也不用多打开一个窗口了",
   "publisher": "qcqx",
   "keywords": [
     "draft",
@@ -22,6 +22,7 @@
     "Other"
   ],
   "activationEvents": [
+    "onStartupFinished",
     "onView:qx-drafts"
   ],
   "main": "./out/extension.js",
@@ -40,11 +41,15 @@
       "qx-drafts-container": [
         {
           "id": "qx-drafts",
-          "name": "草稿详情 Detail"
+          "name": "本地草稿详情"
         },
         {
           "id": "qx-drafts-list",
-          "name": "草稿本列表 List"
+          "name": "本地草稿本列表"
+        },
+        {
+          "id": "qx-drafts-github",
+          "name": "GitHub 远端草稿本"
         }
       ]
     },
@@ -56,6 +61,10 @@
       {
         "view": "qx-drafts-list",
         "contents": "还没有保存的草稿本 [learn more](https://github.com/qxchuckle/vsc-drafts)。\n[添加当前草稿本](command:qx-drafts-list.addDrafts)"
+      },
+      {
+        "view": "qx-drafts-github",
+        "contents": "还没有关联的 GitHub 仓库 [learn more](https://github.com/qxchuckle/vsc-drafts)。\n[初始化并选择 GitHub 仓库](command:qx-drafts-github.init)"
       }
     ],
     "menus": {
@@ -98,6 +107,20 @@
           "command": "qx-drafts-list.addDrafts",
           "group": "navigation",
           "when": "view == qx-drafts-list"
+        },
+        {
+          "command": "qx-drafts-github.refresh",
+          "group": "navigation",
+          "when": "view == qx-drafts-github"
+        },
+        {
+          "command": "qx-drafts-github.createFile",
+          "group": "navigation",
+          "when": "view == qx-drafts-github"
+        },
+        {
+          "command": "qx-drafts-github.init",
+          "when": "view == qx-drafts-github"
         }
       ],
       "view/item/context": [
@@ -154,6 +177,16 @@
         {
           "command": "qx-drafts-list.renameDrafts",
           "when": "view == qx-drafts-list",
+          "group": "inline"
+        },
+        {
+          "command": "qx-drafts-github.createFile",
+          "when": "view == qx-drafts-github && (viewItem == folder || viewItem == rootItem)",
+          "group": "inline"
+        },
+        {
+          "command": "qx-drafts-github.deleteFile",
+          "when": "view == qx-drafts-github && viewItem != rootItem",
           "group": "inline"
         }
       ]
@@ -242,6 +275,38 @@
           "light": "resource/images/rename.svg",
           "dark": "resource/images/rename.svg"
         }
+      },
+      {
+        "command": "qx-drafts-github.openFile",
+        "title": "打开github文件"
+      },
+      {
+        "command": "qx-drafts-github.createFile",
+        "title": "新建github文件",
+        "icon": {
+          "light": "resource/images/newFile.svg",
+          "dark": "resource/images/newFile.svg"
+        }
+      },
+      {
+        "command": "qx-drafts-github.refresh",
+        "title": "刷新",
+        "icon": {
+          "light": "resource/images/refresh.svg",
+          "dark": "resource/images/refresh.svg"
+        }
+      },
+      {
+        "command": "qx-drafts-github.deleteFile",
+        "title": "删除",
+        "icon": {
+          "light": "resource/images/delete.svg",
+          "dark": "resource/images/delete.svg"
+        }
+      },
+      {
+        "command": "qx-drafts-github.init",
+        "title": "初始化与选择"
       }
     ],
     "configuration": {
@@ -251,6 +316,21 @@
           "type": "string",
           "default": "",
           "description": "草稿本路径"
+        },
+        "qx-drafts.token": {
+          "type": "string",
+          "default": "",
+          "description": "GitHub Personal Access Token"
+        },
+        "qx-drafts.username": {
+          "type": "string",
+          "default": "",
+          "description": "GitHub 用户名"
+        },
+        "qx-drafts.repo": {
+          "type": "string",
+          "default": "",
+          "description": "作为远端草稿本的 GitHub 仓库名"
         }
       }
     },
@@ -276,15 +356,18 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
-    "@types/vscode": "^1.70.0",
     "@types/mocha": "^10.0.1",
     "@types/node": "16.x",
+    "@types/vscode": "^1.70.0",
     "@typescript-eslint/eslint-plugin": "^6.4.1",
     "@typescript-eslint/parser": "^6.4.1",
+    "@vscode/test-electron": "^2.3.4",
     "eslint": "^8.47.0",
     "glob": "^10.3.3",
     "mocha": "^10.2.0",
-    "typescript": "^5.1.6",
-    "@vscode/test-electron": "^2.3.4"
+    "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "@octokit/rest": "^20.1.0"
   }
 }
