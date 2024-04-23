@@ -26,18 +26,10 @@ VSCode插件市场：[草稿本(Drafts Scratch)](https://marketplace.visualstudi
 
 你需要事先在 GitHub 上创建一个仓库，然后选择该仓库作为远端草稿本。
 
-
-
-
-
-
-
-
-
-
+![image](https://github.com/qxchuckle/vsc-drafts/assets/55614189/5b5f4cd7-ace7-4967-b084-6fdded6b8fc9)
 
 ## TODO
-暂无
+1. 让Github远端草稿本也支持保存在草稿列表中
 
 ## 开发
 克隆本项目：
