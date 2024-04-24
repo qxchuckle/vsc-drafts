@@ -14,7 +14,7 @@
     "type": "git",
     "url": "https://github.com/qxchuckle/vsc-drafts.git"
   },
-  "version": "0.2.2",
+  "version": "0.2.3",
   "engines": {
     "vscode": "^1.70.0"
   },
@@ -349,7 +349,7 @@
           "fontCharacter": "\\E900"
         }
       },
-      "qx-tip-icon":{
+      "qx-tip-icon": {
         "description": "tip icon",
         "default": {
           "fontPath": "./resource/icon/tip.woff",
