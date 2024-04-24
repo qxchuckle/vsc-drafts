@@ -19,14 +19,19 @@ VSCode插件市场：[草稿本(Drafts Scratch)](https://marketplace.visualstudi
 1. 支持的操作：打开、创建、删除、重命名、终端打开、系统资源管理器打开、新窗口打开。
 2. 草稿本列表：可以将当前草稿本保存（收藏）起来，支持快速热切换。
 
-![image](https://github.com/qxchuckle/vsc-drafts/assets/55614189/6d77214c-a248-4a1e-b6c4-6e275076cf90)
+![image](https://github.com/qxchuckle/vsc-drafts/assets/55614189/057aec64-cd1d-412f-b585-7b31142d2d32)
+
+### 草稿列表
+你可以将常用的本地或远端草稿本保存起来，支持快速热切换。
+
+![image](https://github.com/qxchuckle/vsc-drafts/assets/55614189/40f0ec9e-8f18-4471-9fbb-01cde0b768f8)
 
 ### GitHub 远端草稿本
 0.2.2 版本后支持选择一个 GitHub 仓库作为远端草稿本。一些需要**多端同步**的草稿可以使用该功能。
 
 你需要事先在 GitHub 上创建一个仓库，然后点击 **初始化与选择**，依次填写 GitHub 用户名、Token、仓库名。
 
-![image](https://github.com/qxchuckle/vsc-drafts/assets/55614189/5b5f4cd7-ace7-4967-b084-6fdded6b8fc9)
+![image](https://github.com/qxchuckle/vsc-drafts/assets/55614189/e4a1efe7-dfb3-4f48-857d-19d91fb504e3)
 
 > 该功能目前仅在 Window 端测试过，其它平台若存在兼容性问题请前往[Issues](https://github.com/qxchuckle/vsc-drafts/issues)提出。
 
