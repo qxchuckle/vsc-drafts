@@ -22,6 +22,8 @@ VSCode插件市场：[草稿本(Drafts Scratch)](https://marketplace.visualstudi
 
 ![image](https://github.com/qxchuckle/vsc-drafts/assets/55614189/40f0ec9e-8f18-4471-9fbb-01cde0b768f8)
 
+> 注意: 在切换其它GitHub远端草稿本后，将不再追踪同步其它远端草稿本的文件，直到你再次选择其它远端草稿本，所以请注意保存数据、同步后再切换其它远端草稿本，避免数据丢失。
+
 ### GitHub 远端草稿本
 0.2.2 版本后支持选择一个 GitHub 仓库作为远端草稿本。一些需要**多端同步**的草稿可以使用该功能。
 
