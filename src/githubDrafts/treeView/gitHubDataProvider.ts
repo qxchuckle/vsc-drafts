@@ -219,7 +219,7 @@ export class GitHubDataProvider implements vscode.TreeDataProvider<GitHubFile> {
   async revealItem(gitPath: string) {
     // 找到新创建的文件对应的树视图项
     const item = await this.findItem(gitPath);
-    vscode.window.showInformationMessage("item: " + item?.path);
+    // vscode.window.showInformationMessage("item: " + item?.path);
     if (item) {
       // 展开到这个项，并将焦点设置到这个项上
       await this.treeView?.reveal(item, {

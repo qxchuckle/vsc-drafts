@@ -15,7 +15,7 @@ export function createCreateGithubFile(provider: ref<GitHubDataProvider>) {
         rootPath = path.dirname(rootPath);
         rootPath = rootPath === "." ? "" : rootPath;
       }
-      vscode.window.showInformationMessage(rootPath);
+      // vscode.window.showInformationMessage(rootPath);
       const fileName = await vscode.window.showInputBox({
         prompt: "请输入文件名，以 / 分隔可创建父文件夹",
         placeHolder: `在 ${rootPath || "根目录"} 中新建文件`,
