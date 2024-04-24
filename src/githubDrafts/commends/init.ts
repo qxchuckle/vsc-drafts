@@ -4,13 +4,13 @@ import { createGithubDraftsTreeView } from "../treeView/createTreeView";
 
 export function createGithubDraftsInit(
   provider: ref<GitHubDataProvider>,
-  githubConfig: GithubConfig
+  githubConfig: ref<GithubConfig>
 ) {
   return vscode.commands.registerCommand("qx-drafts-github.init", async () => {
     const username = await vscode.window.showInputBox({
       prompt: "请输入 GitHub 用户名",
       placeHolder: "请输入 GitHub 用户名",
-      value: githubConfig.owner,
+      value: githubConfig.value?.owner,
     });
     if (!username) {
       return;
@@ -18,7 +18,7 @@ export function createGithubDraftsInit(
     const token = await vscode.window.showInputBox({
       prompt: "请输入 GitHub Token",
       placeHolder: "请输入 GitHub Token",
-      value: githubConfig.token,
+      value: githubConfig.value?.token,
     });
     if (!token) {
       return;
@@ -26,14 +26,16 @@ export function createGithubDraftsInit(
     const repo = await vscode.window.showInputBox({
       prompt: "请输入需要关联的 GitHub 仓库名，需先创建好",
       placeHolder: "请输入需要关联的 GitHub 仓库名，需先创建好",
-      value: githubConfig.repo,
+      value: githubConfig.value?.repo,
     });
     if (!repo) {
       return;
     }
-    githubConfig.owner = username;
-    githubConfig.token = token;
-    githubConfig.repo = repo;
+    githubConfig.value = {
+      owner: username,
+      token,
+      repo,
+    };
     // 更新配置
     const config = vscode.workspace.getConfiguration("qx-drafts");
     config.update("username", username, true);
@@ -42,7 +44,9 @@ export function createGithubDraftsInit(
     try {
       provider.value = createGithubDraftsTreeView(githubConfig);
     } catch (e) {
-      vscode.window.showErrorMessage("初始化失败，请检查 GitHub 用户名、Token、仓库名是否正确");
+      vscode.window.showErrorMessage(
+        "初始化失败，请检查 GitHub 用户名、Token、仓库名是否正确"
+      );
     }
   });
 }

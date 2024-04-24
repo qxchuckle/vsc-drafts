@@ -44,12 +44,12 @@
           "name": "本地草稿详情"
         },
         {
-          "id": "qx-drafts-list",
-          "name": "本地草稿本列表"
-        },
-        {
           "id": "qx-drafts-github",
           "name": "GitHub 远端草稿本"
+        },
+        {
+          "id": "qx-drafts-list",
+          "name": "草稿本列表"
         }
       ]
     },
@@ -105,7 +105,10 @@
         },
         {
           "command": "qx-drafts-list.addDrafts",
-          "group": "navigation",
+          "when": "view == qx-drafts-list"
+        },
+        {
+          "command": "qx-drafts-list.addGithub",
           "when": "view == qx-drafts-list"
         },
         {
@@ -171,12 +174,12 @@
         },
         {
           "command": "qx-drafts-list.deleteDrafts",
-          "when": "view == qx-drafts-list",
+          "when": "view == qx-drafts-list && viewItem != rootItem",
           "group": "inline"
         },
         {
           "command": "qx-drafts-list.renameDrafts",
-          "when": "view == qx-drafts-list",
+          "when": "view == qx-drafts-list && viewItem != rootItem",
           "group": "inline"
         },
         {
@@ -258,7 +261,7 @@
       },
       {
         "command": "qx-drafts-list.addDrafts",
-        "title": "添加当前草稿本"
+        "title": "添加当前本地草稿本"
       },
       {
         "command": "qx-drafts-list.deleteDrafts",
@@ -275,6 +278,10 @@
           "light": "resource/images/rename.svg",
           "dark": "resource/images/rename.svg"
         }
+      },
+      {
+        "command": "qx-drafts-list.addGithub",
+        "title": "添加当前GitHub远端草稿本"
       },
       {
         "command": "qx-drafts-github.openFile",
@@ -339,6 +346,13 @@
         "description": "root item",
         "default": {
           "fontPath": "./resource/icon/rootItem.woff",
+          "fontCharacter": "\\E900"
+        }
+      },
+      "qx-tip-icon":{
+        "description": "tip icon",
+        "default": {
+          "fontPath": "./resource/icon/tip.woff",
           "fontCharacter": "\\E900"
         }
       }

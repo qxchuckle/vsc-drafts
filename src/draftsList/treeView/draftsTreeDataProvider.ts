@@ -16,11 +16,31 @@ export class DraftsTreeDataProvider
   getTreeItem(element: DraftItem): vscode.TreeItem {
     const treeItem = new vscode.TreeItem(element.name);
     treeItem.description = element.path;
-    treeItem.command = {
-      command: "qx-drafts.showFileTree",
-      title: "打开草稿本",
-      arguments: [element.path],
-    };
+    if (element.root) {
+      treeItem.iconPath = new vscode.ThemeIcon("qx-tip-icon");
+      treeItem.contextValue = "rootItem";
+      return treeItem;
+    }
+    // 附加命令
+    if (element.path.startsWith("GitHub:")) {
+      const infoArr = element.path.split(":")[1].split("/");
+      const config: GithubConfig = {
+        owner: infoArr[0],
+        repo: infoArr[1],
+        token: "",
+      };
+      treeItem.command = {
+        command: "qx-drafts-github.showTreeView",
+        title: "打开 Github 草稿本",
+        arguments: [config],
+      };
+    } else {
+      treeItem.command = {
+        command: "qx-drafts.showFileTree",
+        title: "打开草稿本",
+        arguments: [element.path],
+      };
+    }
     return treeItem;
   }
 
@@ -40,7 +60,16 @@ export class DraftsTreeDataProvider
 
   getDraftFolders(): DraftItem[] {
     // 从 globalState 中读取草稿文件夹的路径
-    return this.context.globalState.get("qx-draftFolders", []);
+    const drafts = this.context.globalState.get<DraftItem[]>(
+      "qx-draftFolders",
+      []
+    );
+    const rootItem = this.createFocusRootItem(
+      "提示",
+      "切换远端仓库后，将不会追踪同步其它仓库文件的修改，请注意保存后再切换"
+    );
+    drafts.unshift(rootItem);
+    return drafts;
   }
 
   addDraftFolder(item: DraftItem) {
@@ -88,5 +117,9 @@ export class DraftsTreeDataProvider
       this.context.globalState.update("qx-draftFolders", draftFolders);
       this.refresh();
     }
+  }
+
+  createFocusRootItem(title: string, describe: string): DraftItem {
+    return new DraftItem(title, describe, true);
   }
 }

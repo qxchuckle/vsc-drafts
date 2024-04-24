@@ -8,6 +8,7 @@ import {
   createCreateGithubFile,
   createGithubRefresh,
   createDeleteGithubFile,
+  createShowTreeView,
 } from "./commends";
 
 export function githubDraftsInit(context: vscode.ExtensionContext) {
@@ -15,13 +16,19 @@ export function githubDraftsInit(context: vscode.ExtensionContext) {
 
   let githubDraftsTreeDataProvider: ref<GitHubDataProvider> = { value: null };
 
-  const githubConfig: GithubConfig = {
-    owner: config.get<string>("username") || "",
-    repo: config.get<string>("repo") || "",
-    token: config.get<string>("token") || "",
+  const githubConfig: ref<GithubConfig> = {
+    value: {
+      owner: config.get<string>("username") || "",
+      repo: config.get<string>("repo") || "",
+      token: config.get<string>("token") || "",
+    },
   };
 
-  if (githubConfig.owner && githubConfig.repo && githubConfig.token) {
+  if (
+    githubConfig.value?.owner &&
+    githubConfig.value.repo &&
+    githubConfig.value.token
+  ) {
     try {
       githubDraftsTreeDataProvider.value =
         createGithubDraftsTreeView(githubConfig);
@@ -33,6 +40,7 @@ export function githubDraftsInit(context: vscode.ExtensionContext) {
   }
 
   context.subscriptions.push(
+    createShowTreeView(githubDraftsTreeDataProvider, githubConfig),
     createGithubDraftsInit(githubDraftsTreeDataProvider, githubConfig),
     createOpenGithubFile(githubDraftsTreeDataProvider),
     createSaveDocumentWatch(githubDraftsTreeDataProvider),

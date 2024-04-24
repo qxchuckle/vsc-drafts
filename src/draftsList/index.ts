@@ -4,6 +4,7 @@ import {
   createAddDrafts,
   createDeleteDrafts,
   createRenameDrafts,
+  createAddGithub,
 } from "./commends";
 import { DraftsTreeDataProvider } from "./treeView/draftsTreeDataProvider";
 
@@ -14,6 +15,7 @@ export function draftsListInit(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     createAddDrafts(draftsTreeDataProvider),
     createDeleteDrafts(draftsTreeDataProvider),
-    createRenameDrafts(draftsTreeDataProvider)
+    createRenameDrafts(draftsTreeDataProvider),
+    createAddGithub(draftsTreeDataProvider)
   );
 }

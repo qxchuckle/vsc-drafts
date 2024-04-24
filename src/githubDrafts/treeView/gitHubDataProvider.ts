@@ -14,19 +14,19 @@ export class GitHubDataProvider implements vscode.TreeDataProvider<GitHubFile> {
   public tempPath = "";
   public treeView: vscode.TreeView<GitHubFile> | undefined;
 
-  constructor(public github: Octokit, public config: GithubConfig) {
+  constructor(public github: Octokit, public config: ref<GithubConfig>) {
     this.tempPath = path.join(
       os.tmpdir(),
       pluginName,
-      this.config.owner,
-      this.config.repo
+      this.config.value!.owner,
+      this.config.value!.repo
     );
   }
 
   async getChildren(element?: GitHubFile): Promise<GitHubFile[]> {
     const { data } = await this.github.repos.getContent({
-      owner: this.config.owner,
-      repo: this.config.repo,
+      owner: this.config.value!.owner,
+      repo: this.config.value!.repo,
       path: element?.path || "",
     });
 
@@ -55,7 +55,10 @@ export class GitHubDataProvider implements vscode.TreeDataProvider<GitHubFile> {
     });
 
     if (!element) {
-      items.push(this.createFocusRootItem("—— 根目录操作 ——"));
+      const tipItem = this.createFocusRootItem("当前仓库", "qx-tip-icon");
+      tipItem.description = `${this.config.value!.owner}/${this.config.value!.repo}`;
+      items.unshift(tipItem);
+      // items.push(this.createFocusRootItem("—— 根目录操作 ——"));
     }
 
     return items;
@@ -65,12 +68,13 @@ export class GitHubDataProvider implements vscode.TreeDataProvider<GitHubFile> {
     return element;
   }
 
-  createFocusRootItem(title: string): GitHubFile {
+  createFocusRootItem(title: string, icon?: string): GitHubFile {
     return new GitHubFile(
       title,
       "",
       vscode.TreeItemCollapsibleState.None,
-      true
+      true,
+      icon
     );
   }
 
@@ -91,8 +95,8 @@ export class GitHubDataProvider implements vscode.TreeDataProvider<GitHubFile> {
 
   async getContent(path: string) {
     return await this.github.repos.getContent({
-      owner: this.config.owner,
-      repo: this.config.repo,
+      owner: this.config.value!.owner,
+      repo: this.config.value!.repo,
       path: path,
     });
   }
@@ -135,8 +139,8 @@ export class GitHubDataProvider implements vscode.TreeDataProvider<GitHubFile> {
     if (!create) {
       try {
         const { data } = await this.github.repos.getContent({
-          owner: this.config.owner,
-          repo: this.config.repo,
+          owner: this.config.value!.owner,
+          repo: this.config.value!.repo,
           path,
         });
         sha = (data as { sha: string }).sha;
@@ -148,8 +152,8 @@ export class GitHubDataProvider implements vscode.TreeDataProvider<GitHubFile> {
     } else {
       try {
         await this.github.repos.getContent({
-          owner: this.config.owner,
-          repo: this.config.repo,
+          owner: this.config.value!.owner,
+          repo: this.config.value!.repo,
           path,
         });
         vscode.window.showErrorMessage(`${path} 已存在，创建失败`);
@@ -158,8 +162,8 @@ export class GitHubDataProvider implements vscode.TreeDataProvider<GitHubFile> {
     }
     // vscode.window.showInformationMessage("sha: " + sha + " path: " + path);
     await this.github.repos.createOrUpdateFileContents({
-      owner: this.config.owner,
-      repo: this.config.repo,
+      owner: this.config.value!.owner,
+      repo: this.config.value!.repo,
       path,
       message: "update file",
       content,
@@ -170,8 +174,8 @@ export class GitHubDataProvider implements vscode.TreeDataProvider<GitHubFile> {
 
   async deleteFile(gitPath: string) {
     const { data } = await this.github.repos.getContent({
-      owner: this.config.owner,
-      repo: this.config.repo,
+      owner: this.config.value!.owner,
+      repo: this.config.value!.repo,
       path: gitPath,
     });
     // 在GitHub中，不能直接删除一个文件夹，当文件夹为空时，它将自动被删除。
@@ -184,8 +188,8 @@ export class GitHubDataProvider implements vscode.TreeDataProvider<GitHubFile> {
       // 如果是文件，直接删除
       const sha = (data as { sha: string }).sha;
       await this.github.repos.deleteFile({
-        owner: this.config.owner,
-        repo: this.config.repo,
+        owner: this.config.value!.owner,
+        repo: this.config.value!.repo,
         path: gitPath,
         message: "delete file",
         sha,

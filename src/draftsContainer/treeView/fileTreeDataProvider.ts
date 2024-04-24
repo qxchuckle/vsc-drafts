@@ -98,9 +98,10 @@ export class FileTreeDataProvider implements vscode.TreeDataProvider<FileItem> {
     });
 
     if (!element) {
-      items.push(this.createFocusRootItem("—— 根目录操作 ——"));
-      // items.push(this.createFocusRootItem("点击聚焦回根目录，这是为了避免某些BUG"));
-      // items.push(this.createFocusRootItem("比如你想在根目录创建文件，那就先点一下"));
+      const pathTipItem = this.createFocusRootItem("当前路径", "qx-tip-icon");
+      pathTipItem.description = this.rootPath;
+      items.unshift(pathTipItem);
+      // items.push(this.createFocusRootItem("—— 根目录操作 ——"));
     }
 
     return items;
@@ -155,12 +156,13 @@ export class FileTreeDataProvider implements vscode.TreeDataProvider<FileItem> {
     }
   }
 
-  createFocusRootItem(title: string): FileItem {
+  createFocusRootItem(title: string, icon?: string): FileItem {
     return new FileItem(
       title,
       vscode.TreeItemCollapsibleState.None,
       vscode.Uri.file(this.rootPath),
-      true
+      true,
+      icon
     );
   }
 }
