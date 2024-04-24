@@ -53,7 +53,8 @@ npm install
 │   │   └─── 📁 commends # 该功能的命令
 │   │   └─── 📁 treeView # 该功能的树视图
 |   |   └─── 📁 ...... # 该功能的其它子项
-│   └───📄 extension.ts # 入口文件
+|   |   └─── 📄 index.ts 功能入口，包含初始化函数
+│   └───📄 extension.ts # 插件入口文件
 ├───📁 types # 定义类型
 └───📄 ......
 ```
