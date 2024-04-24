@@ -34,9 +34,9 @@ VSCode插件市场：[草稿本(Drafts Scratch)](https://marketplace.visualstudi
 > 该功能目前仅在 Window 端测试过，其它平台若存在兼容性问题请前往[Issues](https://github.com/qxchuckle/vsc-drafts/issues)提出。
 
 ## TODO
-1. 让 GitHub 远端草稿本也支持保存在草稿列表中
-2. 缓存清除功能
-3. 支持 Gitee、GitLab 等其它仓库(可能性不大，等找到octokit的替代库再说)
+1. 缓存清除功能
+2. 支持 Gitee、GitLab 等其它仓库(可能性不大，等找到octokit的替代库再说)
+3. 支持 Remote 远程机器(暂时没调试环境，不会适配，学会再说)
 
 ## 开发
 克隆本项目：
