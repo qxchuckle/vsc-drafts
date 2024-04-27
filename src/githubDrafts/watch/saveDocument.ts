@@ -8,14 +8,16 @@ export function createSaveDocumentWatch(provider: ref<GitHubDataProvider>) {
     return;
   }
   // 监听文本文档的保存事件
-  vscode.workspace.onDidSaveTextDocument(async (doc) => {
+  const dis1 = vscode.workspace.onDidSaveTextDocument(async (doc) => {
     handleSaveEvent(doc, provider, "text");
   });
 
   // 监听 notebook 文档的保存事件
-  vscode.workspace.onDidSaveNotebookDocument(async (doc: NotebookDocument) => {
+  const dis2 = vscode.workspace.onDidSaveNotebookDocument(async (doc: NotebookDocument) => {
     handleSaveEvent(doc, provider, "notebook");
   });
+
+  return vscode.Disposable.from(dis1, dis2);
 }
 
 async function handleSaveEvent(

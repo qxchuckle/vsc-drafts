@@ -122,14 +122,14 @@ export class GitHubDataProvider implements vscode.TreeDataProvider<GitHubFile> {
     // 获取文件内容
     const { data } = await this.getContent(gitPath);
     const content = (data as { content: string }).content;
-    if (!content) {
+    // 获取文件编码
+    const encoding = (data as { encoding: string }).encoding;
+    if (!content && encoding === "none") {
       vscode.window.showErrorMessage(`${gitPath} 不是一个文本文件`);
       return;
     }
-    // 获取文件编码
-    const encoding = (data as { encoding: string }).encoding as BufferEncoding;
     // 解码文件内容
-    const decoded = Buffer.from(content, encoding);
+    const decoded = Buffer.from(content, encoding as BufferEncoding);
     // 创建临时文件
     const tempFilePath = this.createTempFile(gitPath, decoded);
     // 使用临时文件路径打开文档

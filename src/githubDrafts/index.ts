@@ -39,11 +39,13 @@ export function githubDraftsInit(context: vscode.ExtensionContext) {
     }
   }
 
+  const watchDis = createSaveDocumentWatch(githubDraftsTreeDataProvider);
+  watchDis && context.subscriptions.push(watchDis);
+
   context.subscriptions.push(
     createShowTreeView(githubDraftsTreeDataProvider, githubConfig),
     createGithubDraftsInit(githubDraftsTreeDataProvider, githubConfig),
     createOpenGithubFile(githubDraftsTreeDataProvider),
-    createSaveDocumentWatch(githubDraftsTreeDataProvider),
     createCreateGithubFile(githubDraftsTreeDataProvider),
     createGithubRefresh(githubDraftsTreeDataProvider),
     createDeleteGithubFile(githubDraftsTreeDataProvider)
