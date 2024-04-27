@@ -244,4 +244,17 @@ export class GitHubDataProvider implements vscode.TreeDataProvider<GitHubFile> {
     }
     return `https://github.com/${owner}/${repo}`;
   }
+
+  clearCache() {
+    if (fs.existsSync(this.tempPath)) {
+      fs.rmdirSync(this.tempPath, { recursive: true });
+    }
+  }
+
+  clearAllCache() {
+    const tempPath = path.join(os.tmpdir(), pluginName);
+    if (fs.existsSync(tempPath)) {
+      fs.rmdirSync(tempPath, { recursive: true });
+    }
+  }
 }

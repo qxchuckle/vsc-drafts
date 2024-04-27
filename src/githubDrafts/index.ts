@@ -10,6 +10,8 @@ import {
   createDeleteGithubFile,
   createShowTreeView,
   createOpenInGithub,
+  createClearAllCache,
+  createClearCache,
 } from "./commends";
 
 export function githubDraftsInit(context: vscode.ExtensionContext) {
@@ -50,6 +52,8 @@ export function githubDraftsInit(context: vscode.ExtensionContext) {
     createCreateGithubFile(githubDraftsTreeDataProvider),
     createGithubRefresh(githubDraftsTreeDataProvider),
     createDeleteGithubFile(githubDraftsTreeDataProvider),
-    createOpenInGithub(githubDraftsTreeDataProvider)
+    createOpenInGithub(githubDraftsTreeDataProvider),
+    createClearCache(githubDraftsTreeDataProvider),
+    createClearAllCache(githubDraftsTreeDataProvider)
   );
 }

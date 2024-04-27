@@ -129,6 +129,14 @@
           "command": "qx-drafts-github.openInGithub",
           "group": "navigation",
           "when": "view == qx-drafts-github"
+        },
+        {
+          "command": "qx-drafts-github.clearCache",
+          "when": "view == qx-drafts-github"
+        },
+        {
+          "command": "qx-drafts-github.clearAllCache",
+          "when": "view == qx-drafts-github"
         }
       ],
       "view/item/context": [
@@ -332,6 +340,14 @@
           "light": "resource/images/github.svg",
           "dark": "resource/images/github.svg"
         }
+      },
+      {
+        "command": "qx-drafts-github.clearCache",
+        "title": "清除当前仓库缓存"
+      },
+      {
+        "command": "qx-drafts-github.clearAllCache",
+        "title": "清除所有本地缓存"
       }
     ],
     "configuration": {

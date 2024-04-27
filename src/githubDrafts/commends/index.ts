@@ -5,3 +5,5 @@ export { createGithubRefresh } from "./refresh";
 export { createDeleteGithubFile } from "./deleteFile";
 export { createShowTreeView } from "./showTreeView";
 export { createOpenInGithub } from "./openInGithub";
+export { createClearCache } from "./clearCache";
+export { createClearAllCache } from "./clearAllCache";
