@@ -124,6 +124,11 @@
         {
           "command": "qx-drafts-github.init",
           "when": "view == qx-drafts-github"
+        },
+        {
+          "command": "qx-drafts-github.openInGithub",
+          "group": "navigation",
+          "when": "view == qx-drafts-github"
         }
       ],
       "view/item/context": [
@@ -190,6 +195,11 @@
         {
           "command": "qx-drafts-github.deleteFile",
           "when": "view == qx-drafts-github && viewItem != rootItem",
+          "group": "inline"
+        },
+        {
+          "command": "qx-drafts-github.openInGithub",
+          "when": "view == qx-drafts-github && viewItem == rootItem",
           "group": "inline"
         }
       ]
@@ -314,6 +324,14 @@
       {
         "command": "qx-drafts-github.init",
         "title": "初始化与选择"
+      },
+      {
+        "command": "qx-drafts-github.openInGithub",
+        "title": "在GitHub中打开",
+        "icon": {
+          "light": "resource/images/github.svg",
+          "dark": "resource/images/github.svg"
+        }
       }
     ],
     "configuration": {

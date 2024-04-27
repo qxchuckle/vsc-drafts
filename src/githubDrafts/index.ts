@@ -9,6 +9,7 @@ import {
   createGithubRefresh,
   createDeleteGithubFile,
   createShowTreeView,
+  createOpenInGithub,
 } from "./commends";
 
 export function githubDraftsInit(context: vscode.ExtensionContext) {
@@ -48,6 +49,7 @@ export function githubDraftsInit(context: vscode.ExtensionContext) {
     createOpenGithubFile(githubDraftsTreeDataProvider),
     createCreateGithubFile(githubDraftsTreeDataProvider),
     createGithubRefresh(githubDraftsTreeDataProvider),
-    createDeleteGithubFile(githubDraftsTreeDataProvider)
+    createDeleteGithubFile(githubDraftsTreeDataProvider),
+    createOpenInGithub(githubDraftsTreeDataProvider)
   );
 }

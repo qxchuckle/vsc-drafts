@@ -235,4 +235,13 @@ export class GitHubDataProvider implements vscode.TreeDataProvider<GitHubFile> {
       });
     }
   }
+
+  getRepoUrl() {
+    const owner = this.config.value?.owner;
+    const repo = this.config.value?.repo;
+    if (!owner || !repo) {
+      return "";
+    }
+    return `https://github.com/${owner}/${repo}`;
+  }
 }
