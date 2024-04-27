@@ -56,7 +56,9 @@ export class GitHubDataProvider implements vscode.TreeDataProvider<GitHubFile> {
 
     if (!element) {
       const tipItem = this.createFocusRootItem("当前仓库", "qx-tip-icon");
-      tipItem.description = `${this.config.value!.owner}/${this.config.value!.repo}`;
+      tipItem.description = `${this.config.value!.owner}/${
+        this.config.value!.repo
+      }`;
       items.unshift(tipItem);
       // items.push(this.createFocusRootItem("—— 根目录操作 ——"));
     }
@@ -102,7 +104,7 @@ export class GitHubDataProvider implements vscode.TreeDataProvider<GitHubFile> {
   }
 
   // 创建临时文件
-  createTempFile(filePath: string, content: string) {
+  createTempFile(filePath: string, content: Buffer) {
     const tempFilePath = path.join(this.tempPath, filePath);
     const dir = path.dirname(tempFilePath);
     if (!fs.existsSync(dir)) {
@@ -119,11 +121,15 @@ export class GitHubDataProvider implements vscode.TreeDataProvider<GitHubFile> {
   async openFile(gitPath: string) {
     // 获取文件内容
     const { data } = await this.getContent(gitPath);
+    const content = (data as { content: string }).content;
+    if (!content) {
+      vscode.window.showErrorMessage(`${gitPath} 不是一个文本文件`);
+      return;
+    }
+    // 获取文件编码
+    const encoding = (data as { encoding: string }).encoding as BufferEncoding;
     // 解码文件内容
-    const decoded = Buffer.from(
-      (data as { content: string }).content,
-      "base64"
-    ).toString();
+    const decoded = Buffer.from(content, encoding);
     // 创建临时文件
     const tempFilePath = this.createTempFile(gitPath, decoded);
     // 使用临时文件路径打开文档
