@@ -60,15 +60,17 @@ export class DraftsTreeDataProvider
 
   getDraftFolders(): DraftItem[] {
     // 从 globalState 中读取草稿文件夹的路径
-    const drafts = this.context.globalState.get<DraftItem[]>(
-      "qx-draftFolders",
-      []
+    const drafts = this.context.globalState
+      .get<DraftItem[]>("qx-draftFolders", [])
+      .filter((item) => {
+        return !item.root;
+      });
+    drafts.unshift(
+      this.createFocusRootItem(
+        "提示",
+        "切换远端仓库后，将不会追踪同步其它仓库文件的修改，请注意保存后再切换"
+      )
     );
-    const rootItem = this.createFocusRootItem(
-      "提示",
-      "切换远端仓库后，将不会追踪同步其它仓库文件的修改，请注意保存后再切换"
-    );
-    drafts.unshift(rootItem);
     return drafts;
   }
 
