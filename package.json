@@ -392,10 +392,6 @@
       }
     }
   },
-  "extensionKind": [
-    "workspace",
-    "ui"
-  ],
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
