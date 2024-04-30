@@ -393,6 +393,7 @@
     }
   },
   "extensionKind": [
+    "workspace",
     "ui"
   ],
   "scripts": {
