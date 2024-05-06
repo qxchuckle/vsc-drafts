@@ -29,7 +29,7 @@ async function handleSaveEvent(
   const tempPath = provider.value!.tempPath;
   const relativePath = path.relative(tempPath, fsPath).replace(/\\/g, "/");
   // 检查文件是否在临时目录中
-  if (!relativePath.startsWith("../")) {
+  if (!relativePath.startsWith("../") && relativePath.includes("qx-drafts")) {
     await vscode.window.withProgress(
       {
         location: vscode.ProgressLocation.Notification,
