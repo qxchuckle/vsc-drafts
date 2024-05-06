@@ -2,6 +2,7 @@ import * as vscode from "vscode";
 import * as path from "path";
 import { GitHubDataProvider } from "../treeView/gitHubDataProvider";
 import { NotebookDocument } from "vscode";
+import { name as pluginName } from "../../../package.json";
 
 export function createSaveDocumentWatch(provider: ref<GitHubDataProvider>) {
   if (!provider.value) {
@@ -13,9 +14,11 @@ export function createSaveDocumentWatch(provider: ref<GitHubDataProvider>) {
   });
 
   // 监听 notebook 文档的保存事件
-  const dis2 = vscode.workspace.onDidSaveNotebookDocument(async (doc: NotebookDocument) => {
-    handleSaveEvent(doc, provider, "notebook");
-  });
+  const dis2 = vscode.workspace.onDidSaveNotebookDocument(
+    async (doc: NotebookDocument) => {
+      handleSaveEvent(doc, provider, "notebook");
+    }
+  );
 
   return vscode.Disposable.from(dis1, dis2);
 }
@@ -29,7 +32,7 @@ async function handleSaveEvent(
   const tempPath = provider.value!.tempPath;
   const relativePath = path.relative(tempPath, fsPath).replace(/\\/g, "/");
   // 检查文件是否在临时目录中
-  if (!relativePath.startsWith("../")) {
+  if (!relativePath.startsWith("../") && fsPath.includes(pluginName)) {
     await vscode.window.withProgress(
       {
         location: vscode.ProgressLocation.Notification,
