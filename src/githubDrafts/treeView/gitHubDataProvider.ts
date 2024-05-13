@@ -152,7 +152,7 @@ export class GitHubDataProvider implements vscode.TreeDataProvider<GitHubFile> {
         sha = (data as { sha: string }).sha;
         path = (data as { path: string }).path;
       } catch (error) {
-        vscode.window.showErrorMessage(`${path} 已在远端删除，更新失败`);
+        vscode.window.showErrorMessage(`${path} 更新失败，请重新保存`);
         return false;
       }
     } else {
