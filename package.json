@@ -14,7 +14,7 @@
     "type": "git",
     "url": "https://github.com/qxchuckle/vsc-drafts.git"
   },
-  "version": "0.2.7",
+  "version": "0.2.8",
   "engines": {
     "vscode": "^1.70.0"
   },
