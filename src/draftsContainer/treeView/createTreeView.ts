@@ -21,9 +21,9 @@ export function createDraftsTreeView(
       return null;
     }
     // 从缓存拿最近历史
-    const historyItem = caches
-      .getStack()
-      .find((i) => i.os === os && existsSync(i.path));
+    const historyItem = caches.stack.find(
+      (i) => i.os === os && existsSync(i.path)
+    );
     // 没有历史则返回
     if (!historyItem) {
       vscode.window.showErrorMessage(`${path} 不存在, 请重新选择`);
@@ -32,9 +32,16 @@ export function createDraftsTreeView(
     // 有历史则使用历史路径
     path = historyItem.path;
   }
-  // 添加历史
+  // 更新缓存，去掉重复项
+  caches.stack = caches.stack.filter((i) => i.path !== path || i.os !== os);
+  // 添加新项
   caches.push({ path, os });
-  context.globalState.update("qx-local-list-caches", caches.getStack());
+  context.globalState.update("qx-local-list-caches", caches.stack);
+  // vscode.window.showErrorMessage(
+  //   caches.stack.reduce((pre, i) => {
+  //     return pre + i.path + " " + i.os + "\n";
+  //   }, "")
+  // );
   // 更新配置
   const config = vscode.workspace.getConfiguration("qx-drafts");
   config.update("folderPath", path, true);

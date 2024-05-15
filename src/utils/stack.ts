@@ -1,5 +1,5 @@
 export class Stack<T> {
-  private stack: T[];
+  public stack: T[];
   private size: number;
   constructor(arr: T[] | undefined, size: number) {
     this.stack = arr || [];
@@ -22,8 +22,5 @@ export class Stack<T> {
   }
   clear(): void {
     this.stack = [];
-  }
-  getStack(): T[] {
-    return this.stack;
   }
 }
