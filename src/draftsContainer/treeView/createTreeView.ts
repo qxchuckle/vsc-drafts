@@ -21,9 +21,15 @@ export function createDraftsTreeView(
       return null;
     }
     // 从缓存拿最近历史
-    const historyItem = caches.stack.find(
-      (i) => i.os === os && existsSync(i.path)
-    );
+    let historyItem;
+    // 从数组末尾开始查找
+    for (let i = caches.getLength() - 1; i >= 0; i--) {
+      const item = caches.stack[i];
+      if (item.os === os && existsSync(item.path)) {
+        historyItem = item;
+        break;
+      }
+    }
     // 没有历史则返回
     if (!historyItem) {
       vscode.window.showErrorMessage(`${path} 不存在, 请重新选择`);

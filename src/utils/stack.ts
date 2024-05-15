@@ -23,4 +23,7 @@ export class Stack<T> {
   clear(): void {
     this.stack = [];
   }
+  getLength(): number {
+    return this.stack.length;
+  }
 }
