@@ -12,6 +12,7 @@ import {
   createOpenInGithub,
   createClearAllCache,
   createClearCache,
+  createExit,
 } from "./commends";
 
 export function githubDraftsInit(context: vscode.ExtensionContext) {
@@ -54,6 +55,7 @@ export function githubDraftsInit(context: vscode.ExtensionContext) {
     createDeleteGithubFile(githubDraftsTreeDataProvider),
     createOpenInGithub(githubDraftsTreeDataProvider),
     createClearCache(githubDraftsTreeDataProvider),
-    createClearAllCache(githubDraftsTreeDataProvider)
+    createClearAllCache(githubDraftsTreeDataProvider),
+    createExit(githubDraftsTreeDataProvider)
   );
 }

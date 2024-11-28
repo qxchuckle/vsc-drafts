@@ -257,4 +257,20 @@ export class GitHubDataProvider implements vscode.TreeDataProvider<GitHubFile> {
       fs.rmdirSync(tempPath, { recursive: true });
     }
   }
+
+  getRepoName() {
+    const owner = this.config.value?.owner;
+    const repo = this.config.value?.repo;
+    return `${owner}/${repo}`;
+  }
+
+  exit() {
+    const name = this.getRepoName();
+    const config = vscode.workspace.getConfiguration("qx-drafts");
+    config.update("repo", "", true);
+    this.config.value && (this.config.value.repo = "");
+    this.treeView?.dispose();
+    this.treeView = undefined;
+    vscode.window.showInformationMessage(`退出 ${name} 成功`);
+  }
 }

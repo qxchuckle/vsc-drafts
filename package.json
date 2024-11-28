@@ -137,6 +137,10 @@
         {
           "command": "qx-drafts-github.clearAllCache",
           "when": "view == qx-drafts-github"
+        },
+        {
+          "command": "qx-drafts-github.exit",
+          "when": "view == qx-drafts-github"
         }
       ],
       "view/item/context": [
@@ -348,6 +352,10 @@
       {
         "command": "qx-drafts-github.clearAllCache",
         "title": "清除所有本地缓存"
+      },
+      {
+        "command": "qx-drafts-github.exit",
+        "title": "退出当前远端草稿本"
       }
     ],
     "configuration": {
