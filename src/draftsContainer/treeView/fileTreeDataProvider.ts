@@ -1,23 +1,37 @@
-import * as vscode from "vscode";
-import { FileItem } from "./fileItem";
-import * as path from "path";
+import * as vscode from 'vscode';
+import { FileItem } from './fileItem';
+import * as path from 'path';
+import { TreeDragAndDropController } from './treeDragAndDropController';
 
-export class FileTreeDataProvider implements vscode.TreeDataProvider<FileItem> {
+export class FileTreeDataProvider
+  extends TreeDragAndDropController
+  implements vscode.TreeDataProvider<FileItem>
+{
   private _onDidChangeTreeData: vscode.EventEmitter<FileItem | undefined> =
     new vscode.EventEmitter<FileItem | undefined>();
   readonly onDidChangeTreeData: vscode.Event<FileItem | undefined> =
     this._onDidChangeTreeData.event;
   private _selectedItem: FileItem | undefined;
 
-  private rootPath: string;
+  public rootPath: string;
   private fileWatcher: vscode.FileSystemWatcher | null = null;
 
   public treeView: vscode.TreeView<FileItem> | undefined;
+  public context: vscode.ExtensionContext;
 
-  constructor(rootPath: string, watch: boolean = true) {
+  // todo: 暂没想好怎么维护，先空着吧
+  private allItems: FileItem[] = [];
+
+  constructor(
+    context: vscode.ExtensionContext,
+    rootPath: string,
+    watch: boolean = true,
+  ) {
+    super();
+    this.context = context;
     this.rootPath = path.normalize(rootPath);
     if (watch) {
-      const pattern = new vscode.RelativePattern(this.rootPath, "*");
+      const pattern = new vscode.RelativePattern(this.rootPath, '*');
       this.fileWatcher = vscode.workspace.createFileSystemWatcher(pattern);
       this.fileWatcher.onDidChange(this.refresh.bind(this), this.handleError);
       this.fileWatcher.onDidCreate(this.refresh.bind(this), this.handleError);
@@ -26,7 +40,7 @@ export class FileTreeDataProvider implements vscode.TreeDataProvider<FileItem> {
   }
 
   handleError(error: Error): void {
-    console.error("An error occurred:", error);
+    console.error('An error occurred:', error);
   }
 
   refresh(): void {
@@ -56,14 +70,14 @@ export class FileTreeDataProvider implements vscode.TreeDataProvider<FileItem> {
         element.collapsibleState === vscode.TreeItemCollapsibleState.Collapsed
       ) {
         directoryEntries = await vscode.workspace.fs.readDirectory(
-          element.resourceUri!
+          element.resourceUri!,
         );
       } else {
         return [];
       }
     } else {
       directoryEntries = await vscode.workspace.fs.readDirectory(
-        vscode.Uri.file(this.rootPath)
+        vscode.Uri.file(this.rootPath),
       );
     }
 
@@ -88,17 +102,18 @@ export class FileTreeDataProvider implements vscode.TreeDataProvider<FileItem> {
       const filePath = element
         ? vscode.Uri.file(`${element.resourceUri!.fsPath}/${name}`)
         : vscode.Uri.file(`${this.rootPath}/${name}`);
-      return new FileItem(
+      const item = new FileItem(
         name,
         type === vscode.FileType.Directory
           ? vscode.TreeItemCollapsibleState.Collapsed
           : vscode.TreeItemCollapsibleState.None,
-        filePath
+        filePath,
       );
+      return item;
     });
 
     if (!element) {
-      const pathTipItem = this.createFocusRootItem("当前路径", "qx-tip-icon");
+      const pathTipItem = this.createFocusRootItem('当前路径', 'qx-tip-icon');
       pathTipItem.description = this.rootPath;
       items.unshift(pathTipItem);
       // items.push(this.createFocusRootItem("—— 根目录操作 ——"));
@@ -118,29 +133,25 @@ export class FileTreeDataProvider implements vscode.TreeDataProvider<FileItem> {
       return new FileItem(
         path.basename(parentPath),
         vscode.TreeItemCollapsibleState.Collapsed,
-        vscode.Uri.file(parentPath)
+        vscode.Uri.file(parentPath),
       );
     }
   }
 
+  async getAllItems(): Promise<FileItem[]> {
+    return this.allItems;
+  }
+
   async findItem(uri: vscode.Uri): Promise<FileItem | undefined> {
-    const searchPath = uri.fsPath;
-    const queue: FileItem[] = [];
+    return this.allItems.find(
+      (item) => item.resourceUri?.fsPath === uri.fsPath,
+    );
+  }
 
-    const rootItems = await this.getChildren();
-    queue.push(...rootItems);
-
-    while (queue.length > 0) {
-      const item = queue.shift();
-      if (item) {
-        if (item.resourceUri?.fsPath === searchPath) {
-          return item;
-        }
-        const children = await this.getChildren(item);
-        queue.push(...children);
-      }
-    }
-    return undefined;
+  async findItems(uris: vscode.Uri[]): Promise<FileItem[]> {
+    const allItems = await this.getAllItems();
+    const set = new Set(uris.map((uri) => uri.fsPath));
+    return allItems.filter((item) => set.has(item.resourceUri?.fsPath || ''));
   }
 
   async revealItem(fileUri: vscode.Uri) {
@@ -162,7 +173,7 @@ export class FileTreeDataProvider implements vscode.TreeDataProvider<FileItem> {
       vscode.TreeItemCollapsibleState.None,
       vscode.Uri.file(this.rootPath),
       true,
-      icon
+      icon,
     );
   }
 }

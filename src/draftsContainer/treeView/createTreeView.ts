@@ -1,15 +1,15 @@
-import * as vscode from "vscode";
-import { existsSync } from "fs";
-import { FileTreeDataProvider } from "./fileTreeDataProvider";
-import { Stack } from "../../utils";
-import { platform } from "os";
+import * as vscode from 'vscode';
+import { existsSync } from 'fs';
+import { FileTreeDataProvider } from './fileTreeDataProvider';
+import { Stack } from '../../utils';
+import { platform } from 'os';
 
 export function createDraftsTreeView(
   path: string,
   context: vscode.ExtensionContext,
   caches: Stack<localCache>,
   watch: boolean = true,
-  firstLoading: boolean = false
+  firstLoading: boolean = false,
 ) {
   // 判断路径在系统中是否存在
   const isExist = existsSync(path);
@@ -42,21 +42,23 @@ export function createDraftsTreeView(
   caches.stack = caches.stack.filter((i) => i.path !== path || i.os !== os);
   // 添加新项
   caches.push({ path, os });
-  context.globalState.update("qx-local-list-caches", caches.stack);
+  context.globalState.update('qx-local-list-caches', caches.stack);
   // vscode.window.showErrorMessage(
   //   caches.stack.reduce((pre, i) => {
   //     return pre + i.path + " " + i.os + "\n";
   //   }, "")
   // );
   // 更新配置
-  const config = vscode.workspace.getConfiguration("qx-drafts");
-  config.update("folderPath", path, true);
+  const config = vscode.workspace.getConfiguration('qx-drafts');
+  config.update('folderPath', path, true);
   // 创建数据提供者
-  const provider = new FileTreeDataProvider(path, watch);
+  const provider = new FileTreeDataProvider(context, path, watch);
   // 创建 treeView
-  provider.treeView = vscode.window.createTreeView("qx-drafts", {
+  provider.treeView = vscode.window.createTreeView('qx-drafts', {
     treeDataProvider: provider,
     showCollapseAll: true,
+    dragAndDropController: provider,
+    canSelectMany: true,
   });
   // 监听选中项变动
   // treeView.onDidChangeSelection((e) => {
