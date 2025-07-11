@@ -128,8 +128,8 @@ export abstract class TreeDragAndDropController
     // 只传递id
     const dragData: DragData = {
       paths: source
-        .map((node) => node.resourceUri?.fsPath)
-        .filter((path) => path !== undefined),
+        .map((node) => node.resourceUri?.fsPath || '')
+        .filter((path) => path !== ''),
     };
     treeDataTransfer.set(
       DraftsContainerDragDataTransferMimeType,
