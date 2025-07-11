@@ -8,7 +8,7 @@
 **BUG**与**建议**请前往[Issues](https://github.com/qxchuckle/vsc-drafts/issues)讨论。
 
 ## 安装
-VSCode插件市场：[草稿本(Drafts Scratch)](https://marketplace.visualstudio.com/items?itemName=qcqx.qx-drafts)
+VSCode插件市场：[草稿本(Drafts Scratch)](https://marketplace.visualstudio.com/items?itemName=qcqx.qx-drafts) [open vsx](https://open-vsx.org/extension/qcqx/qx-drafts)
 
 ## 简介
 使用**树视图**展示草稿本结构，就像自带的资源管理器一样。
