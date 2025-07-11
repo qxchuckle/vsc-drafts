@@ -19,9 +19,6 @@ export class FileTreeDataProvider
   public treeView: vscode.TreeView<FileItem> | undefined;
   public context: vscode.ExtensionContext;
 
-  // todo: 暂没想好怎么维护，先空着吧
-  private allItems: FileItem[] = [];
-
   constructor(
     context: vscode.ExtensionContext,
     rootPath: string,
@@ -102,14 +99,13 @@ export class FileTreeDataProvider
       const filePath = element
         ? vscode.Uri.file(`${element.resourceUri!.fsPath}/${name}`)
         : vscode.Uri.file(`${this.rootPath}/${name}`);
-      const item = new FileItem(
+      return new FileItem(
         name,
         type === vscode.FileType.Directory
           ? vscode.TreeItemCollapsibleState.Collapsed
           : vscode.TreeItemCollapsibleState.None,
         filePath,
       );
-      return item;
     });
 
     if (!element) {
@@ -139,13 +135,39 @@ export class FileTreeDataProvider
   }
 
   async getAllItems(): Promise<FileItem[]> {
-    return this.allItems;
+    const result: FileItem[] = [];
+    const queue: FileItem[] = [];
+    const rootItems = await this.getChildren();
+    queue.push(...rootItems);
+    while (queue.length > 0) {
+      const item = queue.shift();
+      if (item) {
+        result.push(item);
+        const children = await this.getChildren(item);
+        queue.push(...children);
+      }
+    }
+    return result;
   }
 
   async findItem(uri: vscode.Uri): Promise<FileItem | undefined> {
-    return this.allItems.find(
-      (item) => item.resourceUri?.fsPath === uri.fsPath,
-    );
+    const searchPath = uri.fsPath;
+    const queue: FileItem[] = [];
+
+    const rootItems = await this.getChildren();
+    queue.push(...rootItems);
+
+    while (queue.length > 0) {
+      const item = queue.shift();
+      if (item) {
+        if (item.resourceUri?.fsPath === searchPath) {
+          return item;
+        }
+        const children = await this.getChildren(item);
+        queue.push(...children);
+      }
+    }
+    return undefined;
   }
 
   async findItems(uris: vscode.Uri[]): Promise<FileItem[]> {

@@ -16,6 +16,10 @@ export async function safeMoveFile(
   const targetUri = vscode.Uri.file(targetPath);
   const fileName = path.basename(sourcePath);
   const moveUri = vscode.Uri.file(path.join(targetPath, fileName));
+  // 如果移动的文件和目标文件路径相同，则跳过
+  if (sourceUri.fsPath === moveUri.fsPath) {
+    return sourceUri;
+  }
   const sourceIsExistInTarget = await isFileExist(moveUri);
   try {
     // console.log(sourceIsExistInTarget, moveUri, sourcePath, targetPath);
