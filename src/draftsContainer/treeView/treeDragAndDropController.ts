@@ -1,12 +1,7 @@
 import * as vscode from 'vscode';
-import { DraftsContainerDragDataTransferMimeType } from './mimeType';
 import { FileItem } from './fileItem';
 import { basename, dirname } from 'path';
-import { safeMoveFile } from '../../utils';
-
-export interface DragData {
-  paths: string[];
-}
+import { isSubPath, safeMoveOrCopyFile } from '../../utils';
 
 /**
  * 树状视图的拖拽和放置控制器
@@ -14,10 +9,7 @@ export interface DragData {
 export abstract class TreeDragAndDropController
   implements vscode.TreeDragAndDropController<FileItem>
 {
-  // dropMimeTypes 和 dragMimeTypes 与树状视图的 id 关联
-  // 用来告诉 Vscode 该控制器只处理从 dragMimeTypes 指定的视图 A 拖拽到 dropMimeTypes 指定的视图 B
-  dropMimeTypes = ['application/vnd.code.tree.qx-drafts'];
-  // 文件管理器拖拽的标准MIME_TYPE
+  dropMimeTypes = ['text/uri-list', 'files'];
   dragMimeTypes = ['text/uri-list'];
 
   abstract rootPath: string;
@@ -36,14 +28,32 @@ export abstract class TreeDragAndDropController
     sources: vscode.DataTransfer,
     _token: vscode.CancellationToken,
   ): Promise<void> {
-    const transferItem = sources.get(DraftsContainerDragDataTransferMimeType);
-    if (!transferItem) {
+    let dragPaths: string[] = [];
+
+    // 处理标准text/uri-list
+    const externalTransferItem = sources.get('text/uri-list');
+    if (externalTransferItem) {
+      const uriList = externalTransferItem.value as string;
+      dragPaths = uriList
+        .split('\n')
+        .filter((line) => line.trim() && !line.startsWith('#'))
+        .map((uri) => vscode.Uri.parse(uri.trim()).fsPath);
+    } else {
+      // 处理通用文件拖拽（从系统文件管理器或其他应用程序）
+      const filesTransferItem = sources.get('files');
+      if (filesTransferItem) {
+        const files = filesTransferItem.value as vscode.DataTransferFile[];
+        // 从 DataTransferFile 对象中提取文件路径
+        dragPaths = files.map((file) => file.uri?.fsPath || '');
+      }
+    }
+    console.log(dragPaths);
+
+    // 如果没有找到拖拽数据，返回
+    if (dragPaths.length === 0) {
       return;
     }
 
-    // 获取拖拽节点
-    const dragData = transferItem.value as DragData;
-    const dragPaths = dragData.paths;
     // 放置前的安全检查
     if (!this.checkSafeToDrop(target, dragPaths)) {
       return;
@@ -89,23 +99,27 @@ export abstract class TreeDragAndDropController
     sources: vscode.DataTransfer;
     _token: vscode.CancellationToken;
   }): Promise<vscode.Uri[]> {
-    const { target, dragPaths, sources, _token } = props;
+    const { target, sources, _token } = props;
+    const dragPaths = props.dragPaths.filter((path) => !!path);
     // const dragItems = await this.findItems(dragPaths);
     let targetPath = target?.resourceUri?.fsPath || this.rootPath;
     const result: vscode.Uri[] = [];
 
-    // 添加到根节点
-    if (targetPath === this.rootPath) {
-      for (const path of dragPaths) {
-        result.push(await safeMoveFile(path, targetPath));
-      }
-      return result;
-    }
-
     // 如果目标节点是可展开的，则放置到其中
-    if (target?.collapsibleState !== vscode.TreeItemCollapsibleState.None) {
+    if (
+      targetPath === this.rootPath ||
+      target?.collapsibleState !== vscode.TreeItemCollapsibleState.None
+    ) {
       for (const path of dragPaths) {
-        result.push(await safeMoveFile(path, targetPath));
+        // 如果是rootPath中的子文件，则移动到目标节点，否则复制到目标节点
+        const type = isSubPath(path, this.rootPath) ? 'move' : 'copy';
+        result.push(
+          await safeMoveOrCopyFile({
+            type,
+            sourcePath: path,
+            targetFolderPath: targetPath,
+          }),
+        );
       }
       return result;
     }
@@ -113,7 +127,14 @@ export abstract class TreeDragAndDropController
     // 对于其他节点，则放到该节点所处文件夹
     for (const path of dragPaths) {
       const targetDir = dirname(targetPath);
-      result.push(await safeMoveFile(path, targetDir));
+      const type = isSubPath(path, this.rootPath) ? 'move' : 'copy';
+      result.push(
+        await safeMoveOrCopyFile({
+          type,
+          sourcePath: path,
+          targetFolderPath: targetDir,
+        }),
+      );
     }
     return result;
   }
@@ -125,16 +146,19 @@ export abstract class TreeDragAndDropController
     treeDataTransfer: vscode.DataTransfer,
     _token: vscode.CancellationToken,
   ): Promise<void> {
-    // 只传递id
-    const dragData: DragData = {
-      paths: source
-        .map((node) => node.resourceUri?.fsPath || '')
-        .filter((path) => path !== ''),
-    };
-    treeDataTransfer.set(
-      DraftsContainerDragDataTransferMimeType,
-      new vscode.DataTransferItem(dragData),
-    );
+    // 设置标准的text/uri-list格式，支持拖拽到VSCode原生文件管理器
+    const uris = source
+      .map((node) => node.resourceUri)
+      .filter((uri): uri is vscode.Uri => uri !== undefined);
+
+    if (uris.length > 0) {
+      // text/uri-list 格式：每行一个URI
+      const uriList = uris.map((uri) => uri.toString()).join('\n');
+      treeDataTransfer.set(
+        'text/uri-list',
+        new vscode.DataTransferItem(uriList),
+      );
+    }
   }
 
   // 放置前的安全检查
